@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WHERE — Countries I've Visited</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/topojson.v3.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <h1 class="logo">WHERE<span class="logo-dot">.</span></h1>
+      <p class="subtitle">Track the countries you've visited</p>
+    </div>
+    <div class="header-right">
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-number" id="stat-count">0</span>
+          <span class="stat-label">Countries</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="stat-percent">0%</span>
+          <span class="stat-label">of the World</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="stat-continents">0</span>
+          <span class="stat-label">Continents</span>
+        </div>
+        <div class="stat stat-flights">
+          <span class="stat-number" id="stat-flights">0</span>
+          <span class="stat-label">Flights</span>
+        </div>
+        <div class="stat stat-flights">
+          <span class="stat-number" id="stat-distance">0</span>
+          <span class="stat-label">km flown</span>
+        </div>
+      </div>
+      <button class="btn btn-passport" id="btn-passport">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="3"/><circle cx="12" cy="11" r="3"/><path d="M7 21v-1a5 5 0 0 1 10 0v1"/></svg>
+        My Passport
+      </button>
+    </div>
+  </header>
+
+  <!-- Map -->
+  <div class="map-container" id="map-container">
+    <!-- Country search overlay -->
+    <div class="map-search-overlay">
+      <div class="search-box">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="search-input" placeholder="Search for a country..." autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+    <div class="map-controls">
+      <button class="map-btn" id="zoom-in" title="Zoom in">+</button>
+      <button class="map-btn" id="zoom-out" title="Zoom out">−</button>
+      <button class="map-btn" id="zoom-reset" title="Reset view">⌂</button>
+    </div>
+    <div class="map-toggles">
+      <button class="map-toggle active" id="toggle-landmarks" title="Toggle landmarks">🏛️ Landmarks</button>
+      <button class="map-toggle active" id="toggle-flights" title="Toggle flight routes">✈️ Flights</button>
+      <button class="map-toggle active" id="toggle-photos" title="Toggle photo markers">📷 Photos</button>
+      <select id="map-year-filter" class="map-year-select" title="Filter flights by year">
+        <option value="all">All Years</option>
+      </select>
+    </div>
+    <svg id="world-map"></svg>
+    <div class="tooltip" id="tooltip"></div>
+
+    <!-- Photo drop zone overlay -->
+    <div class="photo-drop-zone hidden" id="photo-drop-zone">
+      <div class="photo-drop-content">
+        <span class="photo-drop-icon">📷</span>
+        <p>Drop photos here to map them</p>
+        <p class="photo-drop-hint">Only images with GPS EXIF data will appear</p>
+      </div>
+    </div>
+
+    <!-- Photo upload button -->
+    <div class="photo-buttons">
+      <button class="photo-upload-btn" id="btn-upload-photos" title="Upload geotagged photos">📷 Add Photos</button>
+      <button class="photo-upload-btn google-photos-btn" id="btn-google-photos" title="Import from Google Photos">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:4px">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#4285F4" opacity=".3"/>
+          <path d="M12 7V2.05C9.77 2.28 7.78 3.34 6.34 4.93L12 7z" fill="#EA4335"/>
+          <path d="M12 7l5.66-2.07A9.96 9.96 0 0012 2.05V7z" fill="#FBBC05"/>
+          <path d="M17.66 4.93L12 7v5l5.66 2.07A9.96 9.96 0 0022 12c0-2.74-1.1-5.22-2.88-7.02l-.46-.05z" fill="#34A853"/>
+          <path d="M12 12v5l-5.66 2.07C7.98 20.88 9.88 22 12 22c2.12 0 4.02-1.12 5.66-2.93L12 17v-5z" fill="#4285F4"/>
+          <path d="M6.34 19.07L12 17v-5l-5.66-2.07A9.96 9.96 0 002 12c0 2.74 1.1 5.22 2.88 7.02l1.46.05z" fill="#EA4335"/>
+        </svg>
+        Google Photos
+      </button>
+      <span class="photo-clear-all" id="btn-clear-all-photos" title="Remove all photos">Clear all</span>
+    </div>
+    <input type="file" id="photo-file-input" multiple accept="image/*,video/*" style="display:none" />
+
+    <!-- Country popup -->
+    <div class="country-popup hidden" id="country-popup">
+      <button class="country-popup-close" id="popup-close">&times;</button>
+      <div class="country-popup-header">
+        <img id="popup-flag" class="country-popup-flag" alt="" />
+        <div>
+          <h3 class="country-popup-name" id="popup-name"></h3>
+          <span class="country-popup-continent" id="popup-continent"></span>
+        </div>
+      </div>
+      <button class="btn country-popup-btn" id="popup-toggle"></button>
+      <div class="country-popup-landmarks" id="popup-landmarks"></div>
+    </div>
+  </div>
+
+  <!-- Flights Section -->
+  <section class="flights-section" id="flights-section">
+    <h2 class="section-title">
+      My Flights
+      <span class="badge badge-flights" id="flights-badge">0</span>
+      <button class="btn-flights-settings" id="btn-flight-api-settings" title="Flight API Settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </h2>
+    <div class="flights-add">
+      <div class="flights-add-row flights-add-airports">
+        <div class="flight-field flight-field-airport">
+          <label for="flight-from">From</label>
+          <input type="text" id="flight-from" placeholder="Airport or city (e.g. JFK, London)..." autocomplete="off" />
+          <div class="flight-dropdown" id="flight-from-results"></div>
+          <input type="hidden" id="flight-from-iata" />
+        </div>
+        <span class="flight-arrow">✈️</span>
+        <div class="flight-field flight-field-airport">
+          <label for="flight-to">To</label>
+          <input type="text" id="flight-to" placeholder="Airport or city (e.g. LAX, Tokyo)..." autocomplete="off" />
+          <div class="flight-dropdown" id="flight-to-results"></div>
+          <input type="hidden" id="flight-to-iata" />
+        </div>
+      </div>
+      <div class="flights-add-row flights-add-details">
+        <div class="flight-field flight-field-sm flight-field-date">
+          <label for="flight-date">Date</label>
+          <input type="hidden" id="flight-date" />
+          <button class="date-picker-trigger" id="date-picker-trigger" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="date-picker-label">Pick a date</span>
+          </button>
+          <div class="cal-popup" id="cal-popup">
+            <div class="cal-header">
+              <button class="cal-nav" id="cal-prev" type="button">&lsaquo;</button>
+              <span class="cal-month-year" id="cal-month-year"></span>
+              <button class="cal-nav" id="cal-next" type="button">&rsaquo;</button>
+            </div>
+            <div class="cal-weekdays">
+              <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+            </div>
+            <div class="cal-days" id="cal-days"></div>
+            <div class="cal-footer">
+              <button class="cal-today-btn" id="cal-today" type="button">Today</button>
+              <button class="cal-clear-btn" id="cal-clear" type="button">Clear</button>
+            </div>
+          </div>
+        </div>
+        <div class="flight-field flight-field-sm">
+          <label for="flight-time">Departure</label>
+          <input type="time" id="flight-time" />
+        </div>
+        <div class="flight-field flight-field-sm">
+          <label for="flight-arrival-time">Arrival</label>
+          <input type="time" id="flight-arrival-time" />
+        </div>
+        <div class="flight-field flight-field-sm flight-field-fetch">
+          <label for="flight-number">Flight #</label>
+          <div class="flight-number-row">
+            <input type="text" id="flight-number" placeholder="e.g. AA123" autocomplete="off" />
+            <button class="btn-fetch-flight" id="btn-fetch-flight" title="Fetch flight info from API">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 12l6-6v4h8V6l6 6-6 6v-4H8v4z"/></svg>
+              Fetch
+            </button>
+          </div>
+          <div class="fetch-status hidden" id="fetch-status"></div>
+        </div>
+        <div class="flight-field flight-field-sm">
+          <label for="flight-booking">Booking Code</label>
+          <input type="text" id="flight-booking" placeholder="e.g. ABC123" autocomplete="off" />
+        </div>
+        <button class="btn btn-add-flight" id="btn-add-flight">Add Flight</button>
+      </div>
+    </div>
+    <div class="flights-stats" id="flights-stats-bar">
+      <div class="flight-stat-item">
+        <span class="flight-stat-val" id="fs-total">0</span>
+        <span class="flight-stat-lbl">Flights</span>
+      </div>
+      <div class="flight-stat-item">
+        <span class="flight-stat-val" id="fs-distance">0</span>
+        <span class="flight-stat-lbl">km total</span>
+      </div>
+      <div class="flight-stat-item">
+        <span class="flight-stat-val" id="fs-routes">0</span>
+        <span class="flight-stat-lbl">Routes</span>
+      </div>
+      <div class="flight-stat-item">
+        <span class="flight-stat-val" id="fs-airports">0</span>
+        <span class="flight-stat-lbl">Airports</span>
+      </div>
+      <div class="flight-stat-item">
+        <span class="flight-stat-val" id="fs-earth">0</span>
+        <span class="flight-stat-lbl">× around Earth</span>
+      </div>
+    </div>
+    <!-- Filter & Search Bar -->
+    <div class="flights-toolbar">
+      <div class="flights-filter-group">
+        <select id="flights-year-filter" class="flights-select" title="Filter by year">
+          <option value="all">All Years</option>
+        </select>
+        <input type="text" id="flights-search" class="flights-search-input" placeholder="Search flights…" autocomplete="off" />
+      </div>
+      <div class="flights-import-export">
+        <button class="btn btn-flights-ie" id="btn-import-flights" title="Import flights from CSV or JSON">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Import
+        </button>
+        <button class="btn btn-flights-ie" id="btn-export-flights" title="Export flights as CSV or JSON">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <div class="flights-list" id="flights-list"></div>
+    <p class="empty-state" id="flights-empty">Add your first flight to start tracking your routes!</p>
+
+    <!-- Advanced Statistics Panel -->
+    <div class="flights-advanced-stats hidden" id="flights-advanced-stats">
+      <h3 class="flights-adv-title">
+        <span>📊</span> Flight Insights
+      </h3>
+      <div class="flights-adv-grid">
+        <div class="adv-stat-card" id="adv-top-airports">
+          <h4 class="adv-stat-heading">🏆 Top Airports</h4>
+          <div class="adv-stat-body" id="adv-top-airports-body"></div>
+        </div>
+        <div class="adv-stat-card" id="adv-airlines">
+          <h4 class="adv-stat-heading">✈️ Airlines</h4>
+          <div class="adv-stat-body" id="adv-airlines-body"></div>
+        </div>
+        <div class="adv-stat-card" id="adv-monthly">
+          <h4 class="adv-stat-heading">📅 Busiest Months</h4>
+          <div class="adv-stat-body" id="adv-monthly-body"></div>
+        </div>
+        <div class="adv-stat-card" id="adv-longest">
+          <h4 class="adv-stat-heading">🌍 Longest Flights</h4>
+          <div class="adv-stat-body" id="adv-longest-body"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Edit Flight Modal -->
+  <div class="modal-overlay" id="edit-flight-modal">
+    <div class="modal edit-flight-modal-content">
+      <button class="modal-close" id="edit-flight-close">&times;</button>
+      <div class="edit-flight-header">
+        <span class="edit-flight-icon">✏️</span>
+        <h2>Edit Flight</h2>
+      </div>
+      <input type="hidden" id="edit-flight-id" />
+      <div class="edit-flight-form">
+        <div class="edit-flight-row">
+          <div class="edit-flight-field edit-flight-field-airport">
+            <label>From</label>
+            <input type="text" id="edit-flight-from" placeholder="Search airport…" autocomplete="off" />
+            <input type="hidden" id="edit-flight-from-iata" />
+            <div class="flight-dropdown" id="edit-flight-from-results"></div>
+          </div>
+          <div class="edit-flight-arrow">→</div>
+          <div class="edit-flight-field edit-flight-field-airport">
+            <label>To</label>
+            <input type="text" id="edit-flight-to" placeholder="Search airport…" autocomplete="off" />
+            <input type="hidden" id="edit-flight-to-iata" />
+            <div class="flight-dropdown" id="edit-flight-to-results"></div>
+          </div>
+        </div>
+        <div class="edit-flight-divider"></div>
+        <div class="edit-flight-row edit-flight-row-3">
+          <div class="edit-flight-field">
+            <label>Date</label>
+            <input type="date" id="edit-flight-date" />
+          </div>
+          <div class="edit-flight-field">
+            <label>Departure</label>
+            <input type="time" id="edit-flight-time" />
+          </div>
+          <div class="edit-flight-field">
+            <label>Arrival</label>
+            <input type="time" id="edit-flight-arrival" />
+          </div>
+        </div>
+        <div class="edit-flight-row">
+          <div class="edit-flight-field">
+            <label>Flight Number</label>
+            <input type="text" id="edit-flight-number" placeholder="e.g. AA123" />
+          </div>
+          <div class="edit-flight-field">
+            <label>Booking Code</label>
+            <input type="text" id="edit-flight-booking" placeholder="e.g. ABCDEF" />
+          </div>
+        </div>
+        <div class="edit-flight-actions">
+          <button class="btn edit-flight-btn-cancel" id="edit-flight-cancel">Cancel</button>
+          <button class="btn edit-flight-btn-save" id="edit-flight-save">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flights Import Modal -->
+  <div class="modal-overlay" id="flights-import-modal">
+    <div class="modal fi-modal">
+      <button class="modal-close" id="fi-modal-close">&times;</button>
+      <h2 class="fi-title">Import Flights</h2>
+
+      <!-- Tab bar -->
+      <div class="fi-tabs">
+        <button class="fi-tab active" data-fi-tab="csv">CSV</button>
+        <button class="fi-tab" data-fi-tab="json">JSON</button>
+        <button class="fi-tab" data-fi-tab="paste">Paste Text</button>
+      </div>
+
+      <!-- CSV Tab -->
+      <div class="fi-panel" id="fi-panel-csv">
+        <p class="fi-desc">Upload a CSV file with your flights. Required columns: <strong>From</strong> and <strong>To</strong> (IATA codes). Optional: Date, Time, Flight Number, Booking Code, Airline.</p>
+        <details class="fi-format-help">
+          <summary>CSV format example</summary>
+          <pre class="fi-example">From,To,Date,Time,Flight Number,Booking Code,Airline
+JFK,LHR,2025-06-15,18:30,BA178,ABC123,British Airways
+LHR,CDG,2025-06-20,09:15,AF1681,,Air France
+CDG,JFK,2025-06-25,14:00,DL263,XYZ789,Delta</pre>
+        </details>
+        <div class="fi-upload-area" id="fi-csv-drop">
+          <span class="fi-upload-icon">📄</span>
+          <p>Drop a CSV file here or click to browse</p>
+          <input type="file" id="fi-csv-input" accept=".csv,.txt" style="display:none" />
+        </div>
+      </div>
+
+      <!-- JSON Tab -->
+      <div class="fi-panel hidden" id="fi-panel-json">
+        <p class="fi-desc">Upload a JSON file previously exported from WHERE, or any JSON array of flight objects.</p>
+        <div class="fi-upload-area" id="fi-json-drop">
+          <span class="fi-upload-icon">{ }</span>
+          <p>Drop a JSON file here or click to browse</p>
+          <input type="file" id="fi-json-input" accept=".json" style="display:none" />
+        </div>
+      </div>
+
+      <!-- Paste Tab -->
+      <div class="fi-panel hidden" id="fi-panel-paste">
+        <p class="fi-desc">Paste flight data — one flight per line. Format: <code>FROM TO</code> or <code>FROM,TO,DATE,TIME,FLIGHT#</code></p>
+        <textarea class="fi-textarea" id="fi-paste-area" rows="8" placeholder="JFK LHR 2025-06-15 BA178
+LHR CDG 2025-06-20
+CDG JFK"></textarea>
+        <button class="btn btn-add-flight fi-parse-btn" id="fi-parse-paste">Import Pasted Flights</button>
+      </div>
+
+      <!-- Results -->
+      <div class="fi-results hidden" id="fi-results">
+        <p class="fi-result-text" id="fi-result-text"></p>
+        <div class="fi-result-errors" id="fi-result-errors"></div>
+        <button class="btn fi-done-btn" id="fi-done">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flights Export Modal -->
+  <div class="modal-overlay" id="flights-export-modal">
+    <div class="modal fi-modal">
+      <button class="modal-close" id="fe-modal-close">&times;</button>
+      <h2 class="fi-title">Export Flights</h2>
+      <p class="fi-desc">Download your flight data to back it up or use in another app.</p>
+      <div class="fe-buttons">
+        <button class="btn fe-btn" id="fe-csv">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download CSV
+        </button>
+        <button class="btn fe-btn" id="fe-json">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download JSON
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flight API Settings Modal -->
+  <div class="modal-overlay" id="flight-api-modal">
+    <div class="modal fapi-modal">
+      <button class="modal-close" id="fapi-modal-close">&times;</button>
+
+      <div class="fapi-header">
+        <span class="fapi-header-icon">✈️</span>
+        <div>
+          <h2 class="fapi-title">Flight API Settings</h2>
+          <p class="fapi-subtitle">Auto-fill flight details from a flight number</p>
+        </div>
+      </div>
+
+      <div class="fapi-body">
+        <div class="fapi-hint">
+          Connect a free aviation API to look up flights like <strong>BA178</strong> — get airports, times, and airline instantly.
+        </div>
+
+        <div class="fapi-form">
+          <div class="fapi-field">
+            <label for="fapi-provider">Provider</label>
+            <select id="fapi-provider">
+              <option value="">— Select a provider —</option>
+              <option value="airlabs">AirLabs (recommended · 1,000 free/month)</option>
+              <option value="aviationstack">AviationStack (100 free/month)</option>
+            </select>
+          </div>
+
+          <div class="fapi-field">
+            <label for="fapi-key">API Key</label>
+            <input type="text" id="fapi-key" placeholder="Paste your API key here" autocomplete="off" />
+          </div>
+
+          <div class="fapi-links" id="fapi-links">
+            <a href="https://airlabs.co" target="_blank" id="fapi-signup-link">Get a free API key →</a>
+          </div>
+
+          <div class="fapi-actions">
+            <button class="btn fapi-btn fapi-btn-test" id="fapi-test">Test Connection</button>
+            <button class="btn fapi-btn fapi-btn-save" id="fapi-save">Save</button>
+          </div>
+
+          <div class="fapi-status hidden" id="fapi-status"></div>
+        </div>
+
+        <details class="fapi-help">
+          <summary>How to get a free API key</summary>
+          <div class="fapi-help-content">
+            <h4>AirLabs (recommended)</h4>
+            <ol>
+              <li>Go to <a href="https://airlabs.co" target="_blank">airlabs.co</a> and create a free account</li>
+              <li>In your dashboard, find your <strong>API Key</strong></li>
+              <li>Copy and paste it above</li>
+            </ol>
+            <p class="fapi-note">Free plan: 1,000 requests/month, HTTPS, real-time + scheduled flights.</p>
+
+            <h4>AviationStack</h4>
+            <ol>
+              <li>Go to <a href="https://aviationstack.com" target="_blank">aviationstack.com</a> and sign up for free</li>
+              <li>In your dashboard, copy the <strong>API Access Key</strong></li>
+              <li>Paste it above</li>
+            </ol>
+            <p class="fapi-note">Free plan: 100 requests/month. Note: HTTPS may not be available on the free tier.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visited Countries List -->
+  <section class="visited-section" id="visited-section">
+    <h2 class="section-title">
+      Countries I've Been To
+      <span class="badge" id="visited-badge">0</span>
+    </h2>
+    <div class="visited-grid" id="visited-grid"></div>
+    <p class="empty-state" id="empty-state">Click on the map or search to add countries you've visited!</p>
+  </section>
+
+  <!-- Passport Modal -->
+  <div class="modal-overlay" id="passport-modal">
+    <div class="modal">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="passport" id="passport">
+        <div class="passport-cover">
+          <div class="passport-emblem">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h2 class="passport-title">TRAVEL PASSPORT</h2>
+          <p class="passport-holder" id="passport-holder">World Explorer</p>
+          <p class="passport-date" id="passport-date"></p>
+        </div>
+
+        <div class="passport-stats" id="passport-stats">
+          <div class="passport-stat-row">
+            <div class="passport-stat">
+              <span class="passport-stat-number" id="p-countries">0</span>
+              <span class="passport-stat-label">Countries Visited</span>
+            </div>
+            <div class="passport-stat">
+              <span class="passport-stat-number" id="p-percent">0%</span>
+              <span class="passport-stat-label">World Explored</span>
+            </div>
+          </div>
+          <div class="passport-stat-row">
+            <div class="passport-stat">
+              <span class="passport-stat-number" id="p-continents">0/7</span>
+              <span class="passport-stat-label">Continents</span>
+            </div>
+            <div class="passport-stat">
+              <span class="passport-stat-number" id="p-rank"></span>
+              <span class="passport-stat-label">Traveler Rank</span>
+            </div>
+          </div>
+          <div class="passport-stat-row">
+            <div class="passport-stat">
+              <span class="passport-stat-number" id="p-flights">0</span>
+              <span class="passport-stat-label">Flights Taken</span>
+            </div>
+            <div class="passport-stat">
+              <span class="passport-stat-number" id="p-distance">0 km</span>
+              <span class="passport-stat-label">Distance Flown</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="passport-continents" id="passport-continents"></div>
+
+        <div class="passport-flags-section">
+          <h3 class="passport-flags-title">Stamps Collection</h3>
+          <div class="passport-flags" id="passport-flags"></div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-download" id="btn-download">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Passport
+        </button>
+        <button class="btn btn-share" id="btn-share">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Copy Stats
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="modules/countries.js"></script>
+  <script type="module" src="modules/landmarks.js"></script>
+  <script type="module" src="modules/flights.js"></script>
+  <script type="module" src="modules/map.js"></script>
+  <script type="module" src="modules/passport.js"></script>
+  <!-- Google Photos Setup Modal -->
+  <div class="modal-overlay" id="google-photos-modal">
+    <div class="modal gp-modal">
+      <button class="modal-close" id="gp-modal-close">&times;</button>
+      <h2 class="gp-modal-title">Connect Google Photos</h2>
+
+      <!-- Step 1: Setup -->
+      <div id="gp-step-setup">
+        <p class="gp-desc">Import <strong>all</strong> geotagged photos from your Google Photos library using a Takeout export. Only coordinates and tiny thumbnails are stored — no full photos.</p>
+        <details class="gp-instructions">
+          <summary>How to export your Google Photos (~2 min)</summary>
+          <ol>
+            <li>Go to <a href="https://takeout.google.com/" target="_blank">takeout.google.com</a></li>
+            <li>Click <strong>Deselect all</strong>, then check only <strong>Google Photos</strong></li>
+            <li>Click <strong>Next step</strong> → choose <strong>.zip</strong> format → <strong>Create export</strong></li>
+            <li>Once ready, download and <strong>unzip</strong> the archive</li>
+            <li>Click the button below and select the <strong>Google Photos</strong> folder from the unzipped archive</li>
+          </ol>
+        </details>
+        <input type="file" id="gp-takeout-input" webkitdirectory style="display:none" />
+        <button class="btn gp-connect-btn gp-takeout-btn" id="gp-takeout-btn">Select Takeout Folder</button>
+
+        <div class="gp-divider"><span>or pick specific photos</span></div>
+
+        <details class="gp-instructions">
+          <summary>Pick photos via Google (requires API setup)</summary>
+          <ol>
+            <li>Go to <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+            <li>Create a new project (or select an existing one)</li>
+            <li>Go to <strong>APIs & Services → Library</strong>, search for <em>Photos Picker API</em> and enable it</li>
+            <li>Go to <strong>APIs & Services → Credentials</strong></li>
+            <li>Click <strong>Create Credentials → OAuth Client ID</strong></li>
+            <li>Choose <strong>Web application</strong></li>
+            <li>Under <em>Authorized JavaScript origins</em>, add: <code id="gp-origin"></code></li>
+            <li>Click Create and copy the <strong>Client ID</strong></li>
+          </ol>
+        </details>
+        <div class="gp-input-row">
+          <input type="text" id="gp-client-id" class="gp-input" placeholder="Paste your Client ID here" />
+          <button class="btn gp-connect-btn" id="gp-connect">Pick Photos</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Picking & Processing -->
+      <div id="gp-step-scan" class="hidden">
+        <div class="gp-scan-status">
+          <div class="gp-spinner"></div>
+          <p id="gp-scan-text">Opening photo picker…</p>
+          <div class="gp-progress-bar">
+            <div class="gp-progress-fill" id="gp-progress-fill"></div>
+          </div>
+          <p class="gp-progress-count" id="gp-progress-count">0 / 0</p>
+        </div>
+      </div>
+
+      <!-- Step 3: Results -->
+      <div id="gp-step-done" class="hidden">
+        <p class="gp-result" id="gp-result-text"></p>
+        <div class="gp-done-buttons">
+          <button class="btn gp-retry-btn" id="gp-retry">↻ Try Again</button>
+          <button class="btn gp-done-btn" id="gp-done">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Story Viewer -->
+  <div class="story-viewer hidden" id="story-viewer">
+    <div class="story-backdrop" id="story-backdrop"></div>
+    <div class="story-container">
+      <!-- Progress bars -->
+      <div class="story-progress" id="story-progress"></div>
+      <!-- Close -->
+      <button class="story-close" id="story-close">&times;</button>
+      <!-- Delete -->
+      <button class="story-delete" id="story-delete" title="Delete this photo">🗑️</button>
+      <!-- Navigation zones -->
+      <div class="story-nav story-nav-prev" id="story-prev" title="Previous"></div>
+      <div class="story-nav story-nav-next" id="story-next" title="Next"></div>
+      <!-- Content -->
+      <div class="story-content" id="story-content">
+        <img class="story-img" id="story-img" alt="" />
+        <video class="story-video" id="story-video" controls playsinline style="display:none"></video>
+        <div class="story-meta" id="story-meta"></div>
+      </div>
+      <!-- Counter -->
+      <div class="story-counter" id="story-counter"></div>
+      <!-- Delete confirm -->
+      <div class="story-confirm hidden" id="story-confirm">
+        <div class="story-confirm-box">
+          <p id="story-confirm-msg">Delete this photo?</p>
+          <div class="story-confirm-actions">
+            <button class="btn story-confirm-btn cancel" id="story-confirm-cancel">Cancel</button>
+            <button class="btn story-confirm-btn delete" id="story-confirm-delete">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Duplicate Dialog -->
+  <div class="photo-dupe-dialog hidden" id="photo-dupe-dialog">
+    <div class="photo-dupe-backdrop" id="photo-dupe-backdrop"></div>
+    <div class="photo-dupe-box">
+      <h3>Duplicate Photo Name</h3>
+      <p class="photo-dupe-msg" id="photo-dupe-msg"></p>
+      <input type="text" class="photo-dupe-input" id="photo-dupe-input" placeholder="New name…" />
+      <label class="photo-dupe-all-label">
+        <input type="checkbox" id="photo-dupe-all" /> Apply to all remaining duplicates in this batch
+      </label>
+      <div class="photo-dupe-actions">
+        <button class="btn photo-dupe-btn rename" id="photo-dupe-rename">Rename</button>
+        <button class="btn photo-dupe-btn skip" id="photo-dupe-skip">Skip</button>
+        <button class="btn photo-dupe-btn add" id="photo-dupe-add-anyway">Add Anyway</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear All Photos Dialog (double confirm) -->
+  <div class="clear-photos-dialog hidden" id="clear-photos-dialog">
+    <div class="clear-photos-backdrop" id="clear-photos-backdrop"></div>
+    <div class="clear-photos-box" id="clear-photos-box">
+      <div class="clear-photos-icon">⚠️</div>
+      <h3 id="clear-photos-title">Delete All Photos?</h3>
+      <p id="clear-photos-msg">This will permanently remove all photos from the map. This cannot be undone.</p>
+      <div class="clear-photos-actions" id="clear-photos-actions">
+        <button class="btn clear-photos-btn cancel" id="clear-photos-cancel">Cancel</button>
+        <button class="btn clear-photos-btn danger" id="clear-photos-confirm">Yes, delete all</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="modules/app.js"></script>
+</body>
+</html>
