@@ -11,7 +11,7 @@ import {
   closePassport,
   downloadPassport,
   copyStats,
-} from "./passport.js";
+} from "./Passport.js";
 import {
   getFlights,
   addFlight,
