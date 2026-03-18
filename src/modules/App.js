@@ -47,8 +47,8 @@ import {
 import { getAirlineFromFlightNumber } from "./airlines.js";
 
 // ─── State ────────────────────────────────────────────────────────────
-const STORAGE_KEY = "been_visited";
-const LANDMARKS_STORAGE_KEY = "been_visited_landmarks";
+const STORAGE_KEY = "where_visited";
+const LANDMARKS_STORAGE_KEY = "where_visited_landmarks";
 
 function loadVisited() {
   try {

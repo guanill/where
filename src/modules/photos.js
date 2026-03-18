@@ -6,8 +6,8 @@
  * we don't need any external library.
  */
 
-const STORAGE_KEY = "been_photos";
-const IDB_NAME = "been_photos_db";
+const STORAGE_KEY = "where_photos";
+const IDB_NAME = "where_photos_db";
 const IDB_STORE = "thumbs";
 let nextId = 1;
 let photos = loadPhotos();

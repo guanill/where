@@ -13,7 +13,7 @@
 
 import { getAirport } from "./airports.js";
 
-const SETTINGS_KEY = "been_flight_api";
+const SETTINGS_KEY = "where_flight_api";
 
 // ─── Settings ─────────────────────────────────────────────────────────
 
