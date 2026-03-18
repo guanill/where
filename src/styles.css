@@ -2514,41 +2514,59 @@ body {
 
 /* ── Tablet & small desktop ── */
 @media (max-width: 768px) {
-  /* Header */
+  /* Header: stack vertically, center everything */
   .header {
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     padding: 12px 16px;
   }
-  .header-left { gap: 8px; }
+  .header-left {
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+  }
   .logo { font-size: 24px; }
   .subtitle { font-size: 12px; }
   .header-right {
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
   }
-  .stats-bar { gap: 10px; flex-wrap: wrap; justify-content: center; flex: 1; }
+  .stats-bar {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+  }
   .stat-number { font-size: 17px; }
   .stat-label { font-size: 10px; }
-  .btn-passport { padding: 8px 16px; font-size: 13px; }
+  .btn-passport {
+    padding: 8px 16px;
+    font-size: 13px;
+    width: 100%;
+    justify-content: center;
+  }
 
   /* Map */
   .map-container { height: 55vh; min-height: 350px; }
+
+  /* Move toggles below the search bar */
   .map-toggles {
-    top: 8px;
+    top: auto;
+    bottom: 52px;
     left: 8px;
     flex-wrap: wrap;
-    max-width: calc(100% - 60px);
+    max-width: calc(100% - 16px);
     gap: 4px;
   }
-  .map-toggle { padding: 4px 8px; font-size: 11px; }
-  .map-year-select { padding: 4px 20px 4px 8px; font-size: 11px; }
+  .map-toggle { padding: 5px 10px; font-size: 11px; }
+  .map-year-select { padding: 5px 22px 5px 8px; font-size: 11px; }
   .map-controls { top: 8px; right: 8px; }
-  .map-btn { width: 32px; height: 32px; font-size: 16px; }
+  .map-btn { width: 36px; height: 36px; font-size: 18px; }
 
-  /* Map search */
+  /* Map search stays on top, full width */
   .map-search-overlay { top: 10px; width: 94%; }
   #search-input { padding: 10px 14px 10px 40px; font-size: 14px; }
 
@@ -2575,10 +2593,21 @@ body {
   .flight-field { min-width: unset; }
   .flight-field-airport { min-width: unset; }
   .flight-field-sm { max-width: unset; min-width: unset; }
+  .flight-field-fetch { max-width: unset; min-width: unset; }
   .flight-arrow { text-align: center; font-size: 20px; padding: 0; }
   .btn-add-flight { width: 100%; justify-content: center; }
-  .flights-stats { gap: 6px; }
-  .flight-stat-item { min-width: 0; flex: 1; padding: 10px 8px; }
+
+  /* Flight stats: scrollable horizontally */
+  .flights-stats {
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .flights-stats::-webkit-scrollbar { display: none; }
+  .flight-stat-item { min-width: 80px; flex: 0 0 auto; padding: 10px 12px; }
   .flight-stat-val { font-size: 17px; }
   .flight-stat-lbl { font-size: 9px; }
   .flights-list { grid-template-columns: 1fr; }
@@ -2586,14 +2615,16 @@ body {
   /* Flights toolbar */
   .flights-toolbar { flex-direction: column; gap: 8px; }
   .flights-filter-group { width: 100%; }
+  .flights-search-input { max-width: unset; }
   .flights-import-export { width: 100%; justify-content: flex-end; }
 
-  /* Flight cards */
+  /* Flight cards - always show action buttons on touch */
   .flight-card { padding: 12px; gap: 8px; }
   .flight-iata { font-size: 16px; }
   .flight-city { font-size: 9px; max-width: 70px; }
   .flight-card-remove,
-  .flight-card-lookup { opacity: 1; }
+  .flight-card-lookup,
+  .flight-card-edit { opacity: 1; }
 
   /* Visited */
   .visited-section { padding: 20px 16px; }
@@ -2641,26 +2672,53 @@ body {
 
 /* ── Small phones ── */
 @media (max-width: 480px) {
-  /* Header becomes very compact */
-  .header { padding: 10px 12px; gap: 8px; }
-  .header-left { flex-direction: column; gap: 2px; align-items: flex-start; }
-  .logo { font-size: 22px; }
+  /* Header: tight and stacked */
+  .header { padding: 10px 12px; gap: 6px; }
+  .header-left {
+    flex-direction: row;
+    gap: 6px;
+    align-items: baseline;
+    justify-content: center;
+    width: 100%;
+  }
+  .logo { font-size: 20px; }
   .subtitle { font-size: 11px; }
-  .header-right { gap: 8px; }
-  .stats-bar { gap: 6px; }
-  .stat { gap: 1px; }
-  .stat-number { font-size: 15px; }
+
+  /* Stats: show 3 key stats in a row, hide flight-specific stats */
+  .header-right { gap: 6px; flex-direction: column; align-items: center; }
+  .stats-bar {
+    gap: 0;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+  .stat {
+    gap: 1px;
+    flex: 1;
+    padding: 4px 0;
+  }
+  .stat-number { font-size: 16px; }
   .stat-label { font-size: 9px; letter-spacing: 0; }
   .stat-flights { display: none; }
-  .btn-passport { padding: 7px 12px; font-size: 12px; gap: 5px; }
+  .btn-passport {
+    padding: 8px 16px;
+    font-size: 12px;
+    gap: 5px;
+    width: 100%;
+    justify-content: center;
+  }
   .btn-passport svg { width: 16px; height: 16px; }
 
-  /* Map takes more vertical space on small screens */
+  /* Map: maximize vertical space */
   .map-container { height: 50vh; min-height: 300px; }
-  .map-toggles { max-width: calc(100% - 50px); }
-  .map-toggle { padding: 3px 6px; font-size: 10px; gap: 2px; }
-  .map-year-select { font-size: 10px; padding: 3px 18px 3px 6px; }
-  .map-btn { width: 28px; height: 28px; font-size: 14px; }
+
+  /* Toggles: move to bottom of map, above photo buttons */
+  .map-toggles {
+    bottom: 52px;
+    max-width: calc(100% - 16px);
+  }
+  .map-toggle { padding: 4px 8px; font-size: 10px; gap: 2px; }
+  .map-year-select { font-size: 10px; padding: 4px 20px 4px 6px; }
+  .map-btn { width: 34px; height: 34px; font-size: 16px; }
 
   /* Search */
   #search-input { padding: 9px 12px 9px 36px; font-size: 13px; }
@@ -2670,7 +2728,7 @@ body {
   .search-result-flag { width: 24px; height: 17px; }
   .search-result-name { font-size: 13px; }
 
-  /* Photo buttons stack vertically on very small screens */
+  /* Photo buttons stack vertically */
   .photo-buttons { flex-direction: column; align-items: flex-end; gap: 4px; }
   .photo-upload-btn { font-size: 11px; padding: 5px 8px; }
 
@@ -2679,24 +2737,24 @@ body {
   .section-title { font-size: 17px; }
   .flight-field label { font-size: 10px; margin-bottom: 4px; }
   .flight-field input[type="text"],
-  .flight-field input[type="time"] { padding: 8px 10px; font-size: 13px; }
-  .date-picker-trigger { padding: 8px 10px; font-size: 13px; }
+  .flight-field input[type="time"] { padding: 10px 12px; font-size: 14px; }
+  .date-picker-trigger { padding: 10px 12px; font-size: 14px; }
   .cal-popup { width: 260px; padding: 10px; }
   .cal-day { width: 30px; height: 30px; font-size: 12px; }
   .flight-number-row { flex-direction: column; gap: 6px; }
-  .btn-fetch-flight { width: 100%; justify-content: center; }
+  .btn-fetch-flight { width: 100%; justify-content: center; padding: 10px; }
 
-  /* Flight stats compact */
-  .flight-stat-item { padding: 8px 4px; }
+  /* Flight stats: horizontal scroll */
+  .flight-stat-item { min-width: 72px; padding: 8px 8px; }
   .flight-stat-val { font-size: 15px; }
   .flight-stat-lbl { font-size: 8px; }
 
   /* Visited */
   .visited-section { padding: 16px 12px; }
-  .visited-grid { grid-template-columns: 1fr; }
+  .visited-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   .visited-card { padding: 10px; }
 
-  /* Passport modal - tighter */
+  /* Passport modal */
   .passport-cover { padding: 24px 16px 20px; }
   .passport-emblem svg { width: 44px; height: 44px; }
   .passport-title { font-size: 16px; letter-spacing: 2px; }
@@ -2711,9 +2769,18 @@ body {
   .passport-flag-item { width: 54px; padding: 4px; }
   .passport-flag-img { width: 28px; height: 20px; }
   .passport-flag-code { font-size: 9px; }
-  .modal-actions { gap: 6px; padding: 10px 12px 16px; }
+  .modal-actions {
+    gap: 8px;
+    padding: 10px 12px 16px;
+    flex-direction: column;
+  }
   .btn-download,
-  .btn-share { padding: 8px 14px; font-size: 13px; }
+  .btn-share {
+    padding: 10px 14px;
+    font-size: 13px;
+    width: 100%;
+    justify-content: center;
+  }
 
   /* Import/export */
   .fi-title { font-size: 17px; }
@@ -2735,29 +2802,38 @@ body {
   .flight-card-meta { gap: 6px; }
   .flight-card-dist { font-size: 11px; }
   .flight-card-details { font-size: 10px; }
+
+  /* Flight API modal */
+  .fapi-header { padding: 20px 20px 0; }
+  .fapi-body { padding: 16px 20px 20px; }
+  .fapi-actions { flex-direction: column; }
+  .fapi-btn { padding: 12px 16px; }
 }
 
 /* ── Very small screens (e.g. iPhone SE, Galaxy Fold) ── */
 @media (max-width: 360px) {
-  .header { padding: 8px 10px; }
-  .logo { font-size: 20px; }
-  .stats-bar { gap: 4px; }
+  .header { padding: 8px 10px; gap: 4px; }
+  .logo { font-size: 18px; }
+  .subtitle { font-size: 10px; }
+  .stats-bar { gap: 0; }
   .stat-number { font-size: 14px; }
-  .btn-passport { padding: 6px 10px; font-size: 11px; }
+  .btn-passport { padding: 7px 10px; font-size: 11px; }
 
   .map-container { height: 45vh; min-height: 260px; }
   .map-toggles { gap: 3px; }
-  .map-toggle { font-size: 9px; padding: 2px 5px; }
+  .map-toggle { font-size: 9px; padding: 3px 5px; }
 
   .flights-section,
   .visited-section { padding: 12px 10px; }
   .section-title { font-size: 15px; gap: 6px; }
 
-  .flight-stat-item { padding: 6px 2px; }
+  .flight-stat-item { padding: 6px 4px; min-width: 60px; }
   .flight-stat-val { font-size: 13px; }
 
   .passport-title { font-size: 14px; letter-spacing: 1px; }
   .passport-stat-number { font-size: 18px; }
+
+  .visited-grid { grid-template-columns: 1fr; }
 }
 
 /* ===== Photo Story Viewer ===== */
