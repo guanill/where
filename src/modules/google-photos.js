@@ -23,9 +23,9 @@ const LIBRARY_API   = "https://photoslibrary.googleapis.com/v1";
 // Route Picker API calls through our local proxy to avoid CORS issues.
 // The proxy at /gp-proxy/* forwards to photospicker.googleapis.com/v1/*
 const PICKER_API = "/gp-proxy";
-const CLIENT_ID_KEY = "where_google_client_id";
-const TOKEN_KEY = "where_google_token";
-const TOKEN_TS_KEY = "where_google_token_ts";
+const CLIENT_ID_KEY = "been_google_client_id";
+const TOKEN_KEY = "been_google_token";
+const TOKEN_TS_KEY = "been_google_token_ts";
 const TOKEN_TTL = 50 * 60 * 1000; // 50 min (tokens last 60 min, refresh early)
 
 let accessToken = null;

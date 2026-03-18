@@ -7,7 +7,7 @@
 
 import { getAirport } from "./airports.js";
 
-const STORAGE_KEY = "where_flights";
+const STORAGE_KEY = "been_flights";
 const R = 6371; // Earth radius in km
 
 let flights = loadFlights();

@@ -3,7 +3,7 @@
  * Caches results in localStorage so images only need to be fetched once.
  */
 
-const CACHE_KEY = "where_landmark_images";
+const CACHE_KEY = "been_landmark_images";
 const WIKI_API = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 
 // Overrides for landmark names that don't map directly to Wikipedia article titles
