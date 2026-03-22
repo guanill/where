@@ -2,24 +2,36 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0f1117;
-  --bg-card: #1a1d27;
-  --bg-hover: #252836;
-  --border: #2a2d3a;
-  --text: #e4e4e7;
-  --text-muted: #9ca3af;
-  --accent: #6366f1;
-  --accent-light: #818cf8;
-  --accent-glow: rgba(99, 102, 241, 0.25);
-  --visited: #22c55e;
+  --bg: #0a0b10;
+  --bg-card: #14151f;
+  --bg-hover: #1c1d2b;
+  --bg-elevated: #1a1b28;
+  --border: #1f2133;
+  --border-light: #282a3e;
+  --text: #eaeaf0;
+  --text-secondary: #b0b3c5;
+  --text-muted: #6b6f85;
+  --accent: #7c6bf5;
+  --accent-light: #9d8ffa;
+  --accent-glow: rgba(124, 107, 245, 0.2);
+  --accent-subtle: rgba(124, 107, 245, 0.08);
+  --visited: #34d399;
   --visited-dark: #166534;
-  --visited-glow: rgba(34, 197, 94, 0.3);
-  --danger: #ef4444;
-  --map-border: #3d4258;
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --visited-glow: rgba(52, 211, 153, 0.2);
+  --visited-subtle: rgba(52, 211, 153, 0.08);
+  --danger: #f87171;
+  --amber: #fbbf24;
+  --blue: #60a5fa;
+  --map-border: #252740;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.5);
   --transition: 0.2s ease;
+  --glass-bg: rgba(14, 15, 22, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-blur: blur(16px);
 }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -31,6 +43,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+  line-height: 1.5;
 }
 
 /* ===== Header ===== */
@@ -38,70 +51,89 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--glass-border);
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
 }
 
-.header-left { display: flex; align-items: baseline; gap: 12px; }
+.header-left { display: flex; align-items: baseline; gap: 10px; }
 
 .logo {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   color: var(--text);
 }
 .logo-dot { color: var(--accent); }
-.subtitle { font-size: 13px; color: var(--text-muted); }
+.subtitle { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
-.header-right { display: flex; align-items: center; gap: 24px; }
+.header-right { display: flex; align-items: center; gap: 20px; }
 
 .stats-bar { display: flex; gap: 20px; }
-.stat { display: flex; flex-direction: column; align-items: center; }
-.stat-number { font-size: 22px; font-weight: 700; color: var(--accent-light); }
-.stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.stat-number { font-size: 18px; font-weight: 700; color: var(--text); }
+.stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
 
 /* ===== Buttons ===== */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 9px 18px;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition);
+  letter-spacing: 0.01em;
 }
 
 .btn-passport {
   background: var(--accent);
   color: white;
   box-shadow: 0 2px 12px var(--accent-glow);
+  border-radius: 50px;
 }
 .btn-passport:hover {
   background: var(--accent-light);
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px var(--accent-glow);
+  box-shadow: 0 6px 20px var(--accent-glow);
 }
 
 .btn-download {
   background: var(--visited);
-  color: white;
+  color: #0a0b10;
+  font-weight: 700;
 }
-.btn-download:hover { background: #16a34a; }
+.btn-download:hover { background: #4ade80; }
 
 .btn-share {
   background: var(--bg-hover);
-  color: var(--text);
-  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
 }
-.btn-share:hover { background: var(--border); }
+.btn-share:hover { background: var(--border); color: var(--text); }
+
+.btn-data-sync {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.btn-data-sync:hover {
+  border-color: var(--accent);
+  color: var(--accent-light);
+  background: var(--accent-subtle);
+}
 
 /* ===== Search (map overlay) ===== */
 .map-search-overlay {
@@ -111,7 +143,7 @@ body {
   transform: translateX(-50%);
   z-index: 150;
   width: 90%;
-  max-width: 480px;
+  max-width: 440px;
   pointer-events: none;
 }
 
@@ -132,39 +164,45 @@ body {
   transform: translateY(-50%);
   color: var(--text-muted);
   pointer-events: none;
+  opacity: 0.7;
 }
 
 #search-input {
   width: 100%;
-  padding: 12px 16px 12px 44px;
-  background: rgba(30, 32, 40, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius);
+  padding: 11px 16px 11px 42px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
   color: var(--text);
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 500;
   outline: none;
-  transition: border-color var(--transition), background var(--transition);
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
 }
-#search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); background: rgba(30, 32, 40, 0.9); }
-#search-input::placeholder { color: var(--text-muted); }
+#search-input:focus {
+  border-color: rgba(124, 107, 245, 0.4);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  background: rgba(14, 15, 22, 0.88);
+}
+#search-input::placeholder { color: var(--text-muted); font-weight: 400; }
 
 .search-results {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 6px);
   left: 0;
   right: 0;
-  background: rgba(30, 32, 40, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-sm);
-  max-height: 300px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  max-height: 280px;
   overflow-y: auto;
   display: none;
   z-index: 200;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
 }
 .search-results.active { display: block; }
 
@@ -176,16 +214,18 @@ body {
   cursor: pointer;
   transition: background var(--transition);
 }
+.search-result-item:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+.search-result-item:last-child { border-radius: 0 0 var(--radius) var(--radius); }
 .search-result-item:hover { background: var(--bg-hover); }
 .search-result-item.visited { opacity: 0.5; }
 
 .search-result-flag {
   width: 28px;
   height: 20px;
-  border-radius: 3px;
+  border-radius: 4px;
   object-fit: cover;
 }
-.search-result-name { font-size: 14px; flex: 1; }
+.search-result-name { font-size: 14px; flex: 1; font-weight: 500; }
 .search-result-check { color: var(--visited); font-size: 16px; }
 
 /* ===== Map ===== */
@@ -206,19 +246,19 @@ body {
 
 #world-map .layer-countries path {
   stroke: var(--map-border);
-  stroke-width: 0.8;
+  stroke-width: 0.6;
   cursor: pointer;
-  transition: fill 0.15s ease;
+  transition: fill 0.2s ease;
 }
 
 #world-map .layer-roads path {
   pointer-events: none;
 }
 
-#world-map path.country-default { fill: var(--bg-hover); }
-#world-map path.country-default:hover { fill: #3a3d4a; }
-#world-map path.country-visited { fill: var(--visited); fill-opacity: 0.7; }
-#world-map path.country-visited:hover { fill-opacity: 0.9; }
+#world-map path.country-default { fill: #171825; }
+#world-map path.country-default:hover { fill: #232538; }
+#world-map path.country-visited { fill: var(--visited); fill-opacity: 0.55; }
+#world-map path.country-visited:hover { fill-opacity: 0.8; }
 
 .map-controls {
   position: absolute;
@@ -226,7 +266,7 @@ body {
   right: 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   z-index: 10;
 }
 
@@ -236,24 +276,27 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 18px;
+  color: var(--text-secondary);
+  font-size: 17px;
   cursor: pointer;
   transition: all var(--transition);
 }
-.map-btn:hover { background: var(--bg-hover); border-color: var(--accent); }
+.map-btn:hover { background: var(--bg-hover); border-color: var(--accent); color: var(--text); }
 
 /* Tooltip */
 .tooltip {
   position: fixed;
-  padding: 8px 14px;
+  padding: 7px 12px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 13px;
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 500;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
@@ -265,7 +308,7 @@ body {
   max-width: 320px;
 }
 .tooltip.visible { opacity: 1; }
-.tooltip-flag { width: 22px; height: 16px; border-radius: 2px; object-fit: cover; }
+.tooltip-flag { width: 20px; height: 14px; border-radius: 2px; object-fit: cover; }
 
 /* ===== Map Layer Toggles ===== */
 .map-toggles {
@@ -273,7 +316,7 @@ body {
   top: 16px;
   left: 16px;
   display: flex;
-  gap: 6px;
+  gap: 5px;
   z-index: 10;
 }
 
@@ -281,41 +324,49 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  padding: 6px 11px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition);
-  opacity: 0.7;
+  opacity: 0.75;
 }
-.map-toggle:hover { opacity: 1; background: var(--bg-hover); }
-.map-toggle.active { opacity: 1; border-color: var(--accent); color: var(--accent-light); background: rgba(99, 102, 241, 0.1); }
+.map-toggle:hover { opacity: 1; background: rgba(14, 15, 22, 0.85); }
+.map-toggle.active {
+  opacity: 1;
+  border-color: rgba(124, 107, 245, 0.3);
+  color: var(--accent-light);
+  background: rgba(124, 107, 245, 0.1);
+}
 
 .map-year-select {
-  padding: 5px 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  padding: 5px 24px 5px 10px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition);
-  opacity: 0.7;
+  opacity: 0.75;
   outline: none;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239ca3af' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b6f85' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
-  padding-right: 24px;
 }
-.map-year-select:hover { opacity: 1; background-color: var(--bg-hover); }
-.map-year-select:focus { opacity: 1; border-color: var(--accent); color: var(--accent-light); }
+.map-year-select:hover { opacity: 1; }
+.map-year-select:focus { opacity: 1; border-color: rgba(124, 107, 245, 0.3); color: var(--accent-light); }
 .map-year-select option { background: var(--bg-card); color: var(--text); }
 
 /* ===== Country Popup ===== */
@@ -325,44 +376,50 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px 24px;
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  padding: 22px 24px;
   width: 280px;
   max-height: 80%;
   overflow-y: auto;
   z-index: 30;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-  animation: popup-in 0.2s ease;
+  box-shadow: var(--shadow-lg);
+  animation: popup-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .country-popup.hidden { display: none; }
 @keyframes popup-in {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
   to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 .country-popup-close {
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: 12px;
+  right: 14px;
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
   line-height: 1;
   transition: color var(--transition);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
-.country-popup-close:hover { color: var(--text-primary); }
+.country-popup-close:hover { color: var(--text); background: var(--bg-hover); }
 .country-popup-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .country-popup-flag {
   width: 48px;
   height: 36px;
-  border-radius: 4px;
+  border-radius: 6px;
   object-fit: cover;
   border: 1px solid var(--border);
 }
@@ -370,7 +427,7 @@ body {
   margin: 0;
   font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text);
 }
 .country-popup-continent {
   font-size: 12px;
@@ -379,13 +436,13 @@ body {
 .country-popup-btn {
   width: 100%;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   border: none;
   transition: all var(--transition);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .country-popup-btn.add {
   background: var(--accent);
@@ -395,19 +452,19 @@ body {
   background: var(--accent-light);
 }
 .country-popup-btn.remove {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(248, 113, 113, 0.1);
+  color: var(--danger);
+  border: 1px solid rgba(248, 113, 113, 0.2);
 }
 .country-popup-btn.remove:hover {
-  background: rgba(239, 68, 68, 0.3);
+  background: rgba(248, 113, 113, 0.2);
 }
 .country-popup-landmarks h4 {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   margin: 0 0 8px;
 }
 .popup-lm-list {
@@ -416,15 +473,15 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 .popup-lm-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px;
+  padding: 7px 8px;
   background: var(--bg-hover);
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   font-size: 13px;
   color: var(--text-secondary);
 }
@@ -436,7 +493,7 @@ body {
 .popup-lm-item img.lm-photo {
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Landmark checkbox */
@@ -464,8 +521,8 @@ body {
   position: relative;
 }
 .lm-checkbox:checked + .lm-checkmark {
-  background: #6366f1;
-  border-color: #6366f1;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 .lm-checkbox:checked + .lm-checkmark::after {
   content: "";
@@ -479,10 +536,8 @@ body {
   transform: rotate(45deg);
 }
 .lm-check-label:hover .lm-checkmark {
-  border-color: #6366f1;
+  border-color: var(--accent);
 }
-
-/* ===== Flights Section ===== */
 
 /* ===== Photo Drop Zone ===== */
 .photo-drop-zone {
@@ -492,7 +547,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(99, 102, 241, 0.15);
+  background: rgba(124, 107, 245, 0.1);
   border: 3px dashed var(--accent);
   border-radius: 16px;
   backdrop-filter: blur(4px);
@@ -501,7 +556,7 @@ body {
 .photo-drop-zone.hidden { display: none; }
 .photo-drop-content {
   text-align: center;
-  color: var(--text-primary);
+  color: var(--text);
 }
 .photo-drop-icon { font-size: 48px; display: block; margin-bottom: 8px; }
 .photo-drop-content p { margin: 4px 0; font-size: 15px; font-weight: 600; }
@@ -514,34 +569,35 @@ body {
   right: 16px;
   z-index: 10;
   display: flex;
-  gap: 6px;
+  gap: 5px;
 }
 .photo-upload-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  color: var(--text-primary);
-  font-size: 13px;
+  gap: 5px;
+  padding: 7px 12px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  color: var(--text-secondary);
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-.photo-upload-btn:hover { background: var(--bg-hover); transform: translateY(-1px); }
-.google-photos-btn { border-color: rgba(66, 133, 244, 0.4); }
-.google-photos-btn:hover { border-color: #4285F4; background: rgba(66, 133, 244, 0.1); }
+.photo-upload-btn:hover { background: var(--bg-hover); color: var(--text); transform: translateY(-1px); }
+.google-photos-btn { border-color: rgba(66, 133, 244, 0.25); }
+.google-photos-btn:hover { border-color: rgba(66, 133, 244, 0.5); background: rgba(66, 133, 244, 0.08); }
 
 /* Clear all photos button */
 .photo-clear-all {
-  font-size: 13px; color: var(--danger);
+  font-size: 12px; color: var(--danger);
   cursor: pointer; align-self: center;
-  padding: 4px 10px; border-radius: 6px;
-  border: 1px solid rgba(239,68,68,0.35);
-  background: rgba(239,68,68,0.08);
+  padding: 4px 10px; border-radius: 50px;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  background: rgba(248, 113, 113, 0.06);
   transition: color 0.2s, background 0.2s, border-color 0.2s;
   user-select: none; white-space: nowrap;
   font-weight: 500;
@@ -578,21 +634,25 @@ body {
 
 /* ===== Flights Section ===== */
 .flights-section {
-  padding: 32px;
+  padding: 40px 32px;
   max-width: 1200px;
   margin: 0 auto;
-  border-bottom: 1px solid var(--border);
 }
 
 .badge-flights {
-  background: #f59e0b;
+  background: var(--amber);
+  color: #0a0b10;
 }
 
 .flights-add {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 .flights-add-row {
@@ -627,10 +687,10 @@ body {
 
 .flight-field label {
   display: block;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   color: var(--text-muted);
   margin-bottom: 6px;
 }
@@ -639,13 +699,13 @@ body {
 .flight-field input[type="time"] {
   width: 100%;
   padding: 10px 14px;
-  background: var(--bg-card);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
   font-size: 14px;
   outline: none;
-  transition: border-color var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 .flight-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
@@ -660,7 +720,7 @@ body {
   gap: 8px;
   width: 100%;
   padding: 10px 14px;
-  background: var(--bg-card);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
@@ -669,7 +729,7 @@ body {
   transition: all var(--transition);
   text-align: left;
 }
-.date-picker-trigger:hover { border-color: var(--accent); }
+.date-picker-trigger:hover { border-color: var(--border-light); }
 .date-picker-trigger:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); outline: none; }
 .date-picker-trigger svg { color: var(--text-muted); flex-shrink: 0; }
 .date-picker-trigger .date-has-value { color: var(--text); }
@@ -683,9 +743,9 @@ body {
   z-index: 500;
   width: 280px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  box-shadow: var(--shadow-lg);
   padding: 14px;
   animation: calFadeIn 0.15s ease;
 }
@@ -719,7 +779,7 @@ body {
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 50%;
-  color: var(--text);
+  color: var(--text-secondary);
   font-size: 18px;
   cursor: pointer;
   transition: all var(--transition);
@@ -773,7 +833,7 @@ body {
   color: var(--accent-light);
 }
 .cal-day.other-month {
-  color: #444;
+  color: #333;
   opacity: 0.5;
 }
 .cal-day.today {
@@ -827,13 +887,13 @@ body {
   left: 0;
   right: 0;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   max-height: 200px;
   overflow-y: auto;
   display: none;
   z-index: 200;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
 }
 .flight-dropdown.active { display: block; }
 
@@ -858,13 +918,13 @@ body {
   display: inline-block;
   background: var(--accent);
   color: #fff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   padding: 2px 6px;
-  border-radius: 3px;
+  border-radius: 4px;
   min-width: 36px;
   text-align: center;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .airport-info {
@@ -872,59 +932,64 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--text);
+  color: var(--text-secondary);
 }
 
 .flight-arrow {
-  font-size: 24px;
+  font-size: 22px;
   padding-bottom: 6px;
+  opacity: 0.7;
 }
 
 .btn-add-flight {
-  background: #f59e0b;
-  color: #000;
+  background: var(--amber);
+  color: #0a0b10;
   font-weight: 700;
   white-space: nowrap;
   height: 40px;
+  border-radius: var(--radius-sm);
 }
-.btn-add-flight:hover { background: #fbbf24; }
+.btn-add-flight:hover { background: #fcd34d; }
 
 .flights-stats {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
 }
 
 .flight-stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 20px;
+  padding: 16px 12px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  min-width: 100px;
+  border-radius: var(--radius);
+  transition: border-color var(--transition);
 }
+.flight-stat-item:hover { border-color: var(--border-light); }
 
 .flight-stat-val {
   font-size: 20px;
-  font-weight: 700;
-  color: #f59e0b;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
 }
 
 .flight-stat-lbl {
   font-size: 10px;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 2px;
+  letter-spacing: 0.8px;
+  margin-top: 4px;
+  font-weight: 600;
 }
 
 /* Validation error feedback */
 .field-error {
   border-color: var(--danger) !important;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2) !important;
 }
 
 @keyframes btnShake {
@@ -943,7 +1008,7 @@ body {
 .flights-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .flight-card {
@@ -953,11 +1018,11 @@ body {
   padding: 14px 16px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   transition: all var(--transition);
   animation: cardIn 0.3s ease;
 }
-.flight-card:hover { border-color: #3b82f6; }
+.flight-card:hover { border-color: var(--border-light); background: var(--bg-elevated); }
 
 .flight-card-main {
   flex: 1;
@@ -982,9 +1047,9 @@ body {
 }
 
 .flight-iata {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
-  color: var(--accent-light);
+  color: var(--text);
   letter-spacing: 1px;
 }
 
@@ -1013,8 +1078,8 @@ body {
 }
 
 .flight-arrow-icon {
-  font-size: 14px;
-  color: #3b82f6;
+  font-size: 13px;
+  color: var(--blue);
 }
 
 .flight-card-meta {
@@ -1026,7 +1091,7 @@ body {
 
 .flight-card-dist {
   font-size: 12px;
-  color: #f59e0b;
+  color: var(--amber);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1042,7 +1107,7 @@ body {
 .flight-card-actions {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   align-items: center;
 }
 
@@ -1062,7 +1127,7 @@ body {
   opacity: 0;
 }
 .flight-card:hover .flight-card-lookup { opacity: 1; }
-.flight-card-lookup:hover { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.flight-card-lookup:hover { background: rgba(96, 165, 250, 0.12); color: var(--blue); }
 
 .flight-card-remove {
   width: 28px;
@@ -1080,7 +1145,7 @@ body {
   opacity: 0;
 }
 .flight-card:hover .flight-card-remove { opacity: 1; }
-.flight-card-remove:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+.flight-card-remove:hover { background: rgba(248, 113, 113, 0.12); color: var(--danger); }
 
 .flight-card-route .flight-code {
   background: var(--bg-hover);
@@ -1093,33 +1158,34 @@ body {
 
 /* ===== Visited Section ===== */
 .visited-section {
-  padding: 32px;
+  padding: 40px 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .section-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
+  letter-spacing: -0.2px;
 }
 
 .badge {
   background: var(--accent);
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   padding: 2px 10px;
-  border-radius: 20px;
+  border-radius: 50px;
 }
 
 .visited-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .visited-card {
@@ -1129,14 +1195,14 @@ body {
   padding: 12px 16px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   transition: all var(--transition);
   animation: cardIn 0.3s ease;
 }
-.visited-card:hover { border-color: var(--danger); }
+.visited-card:hover { border-color: var(--border-light); background: var(--bg-elevated); }
 
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -1145,7 +1211,7 @@ body {
   height: 26px;
   border-radius: 4px;
   object-fit: cover;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .visited-card-info { flex: 1; min-width: 0; }
@@ -1168,13 +1234,13 @@ body {
   opacity: 0;
 }
 .visited-card:hover .visited-card-remove { opacity: 1; }
-.visited-card-remove:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+.visited-card-remove:hover { background: rgba(248, 113, 113, 0.12); color: var(--danger); }
 
 .empty-state {
   color: var(--text-muted);
   text-align: center;
   padding: 48px 0;
-  font-size: 15px;
+  font-size: 14px;
 }
 .empty-state.hidden { display: none; }
 
@@ -1182,8 +1248,9 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1196,14 +1263,14 @@ body {
 
 .modal {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
   padding: 0;
   max-width: 520px;
   width: 90%;
   max-height: 85vh;
   overflow-y: auto;
-  box-shadow: 0 8px 48px rgba(0,0,0,0.5);
+  box-shadow: var(--shadow-lg);
   transform: translateY(20px);
   transition: transform 0.3s ease;
   position: relative;
@@ -1219,16 +1286,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.06);
   border: none;
   border-radius: 50%;
-  color: white;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 20px;
   cursor: pointer;
   z-index: 10;
   transition: all var(--transition);
 }
-.modal-close:hover { background: rgba(255,255,255,0.2); }
+.modal-close:hover { background: rgba(255, 255, 255, 0.12); color: white; }
 
 .modal-actions {
   display: flex;
@@ -1241,7 +1308,7 @@ body {
 .passport { overflow: hidden; }
 
 .passport-cover {
-  background: linear-gradient(135deg, #1e3a5f, #0c2340);
+  background: linear-gradient(135deg, #1a2f4f, #0b1829);
   padding: 40px 24px 32px;
   text-align: center;
   position: relative;
@@ -1251,53 +1318,54 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .passport-emblem {
   margin-bottom: 16px;
-  color: #d4af37;
+  color: #c9a84c;
 }
-.passport-emblem svg { stroke: #d4af37; }
+.passport-emblem svg { stroke: #c9a84c; }
 
 .passport-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
-  letter-spacing: 4px;
-  color: #d4af37;
+  letter-spacing: 5px;
+  color: #c9a84c;
   margin-bottom: 8px;
   position: relative;
 }
 
 .passport-holder {
-  font-size: 16px;
-  color: rgba(255,255,255,0.8);
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.75);
   position: relative;
+  font-weight: 500;
 }
 
 .passport-date {
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
   margin-top: 8px;
   position: relative;
 }
 
 .passport-stats {
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .passport-stat-row {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .passport-stat {
   flex: 1;
   text-align: center;
-  padding: 16px;
+  padding: 14px;
   background: var(--bg);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
@@ -1305,59 +1373,60 @@ body {
 
 .passport-stat-number {
   display: block;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
-  color: var(--accent-light);
+  color: var(--text);
 }
 
 .passport-stat-label {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   margin-top: 4px;
+  font-weight: 600;
 }
 
 .passport-continents {
-  padding: 0 24px 16px;
+  padding: 0 20px 16px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
 }
 
 .continent-badge {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-size: 11px;
   font-weight: 600;
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text-muted);
 }
 .continent-badge.unlocked {
-  border-color: var(--visited);
-  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(52, 211, 153, 0.3);
+  background: var(--visited-subtle);
   color: var(--visited);
 }
 
-.passport-flags-section { padding: 0 24px 24px; }
+.passport-flags-section { padding: 0 20px 20px; }
 
 .passport-flags-title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   color: var(--text-muted);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   text-align: center;
 }
 
 .passport-flags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
 }
 
@@ -1378,7 +1447,7 @@ body {
   height: 28px;
   border-radius: 3px;
   object-fit: cover;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .passport-flag-code {
@@ -1389,9 +1458,9 @@ body {
 }
 
 /* ===== Scrollbar ===== */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 /* ===== Google Photos Modal ===== */
@@ -1401,18 +1470,18 @@ body {
 }
 .gp-modal-title {
   margin: 0 0 16px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 .gp-desc {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
   margin: 0 0 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 .gp-instructions {
   background: var(--bg-hover);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   padding: 12px 16px;
   margin-bottom: 16px;
   font-size: 13px;
@@ -1422,7 +1491,7 @@ body {
 .gp-instructions summary {
   cursor: pointer;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text);
   margin-bottom: 8px;
 }
 .gp-instructions ol {
@@ -1447,8 +1516,8 @@ body {
   padding: 10px 14px;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  color: var(--text);
   font-size: 13px;
   font-family: inherit;
 }
@@ -1460,7 +1529,7 @@ body {
 }
 .gp-connect-btn {
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background: #4285F4;
   color: #fff;
   font-weight: 700;
@@ -1476,8 +1545,8 @@ body {
 .gp-scan-btn:hover { background: var(--accent-light) !important; }
 .gp-pick-btn {
   flex: 0;
-  background: var(--surface-2);
-  color: var(--text-primary);
+  background: var(--bg-hover);
+  color: var(--text);
   font-size: 13px;
 }
 .gp-pick-btn:hover { background: var(--border) !important; }
@@ -1497,16 +1566,16 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 .gp-progress-bar {
   width: 100%;
-  height: 6px;
+  height: 4px;
   background: var(--bg);
-  border-radius: 3px;
+  border-radius: 2px;
   margin: 12px 0 6px;
   overflow: hidden;
 }
 .gp-progress-fill {
   height: 100%;
   background: #4285F4;
-  border-radius: 3px;
+  border-radius: 2px;
   width: 0%;
   transition: width 0.3s ease;
 }
@@ -1516,9 +1585,9 @@ body {
   margin: 0;
 }
 .gp-result {
-  font-size: 15px;
+  font-size: 14px;
   text-align: center;
-  color: var(--text-primary);
+  color: var(--text);
   margin: 10px 0 20px;
   line-height: 1.6;
 }
@@ -1531,7 +1600,7 @@ body {
 .gp-retry-btn {
   flex: 1;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   font-weight: 700;
   border: none;
   cursor: pointer;
@@ -1543,8 +1612,8 @@ body {
 }
 .gp-done-btn:hover { background: var(--accent-light); }
 .gp-retry-btn {
-  background: var(--surface-2);
-  color: var(--text-primary);
+  background: var(--bg-hover);
+  color: var(--text-secondary);
 }
 .gp-retry-btn:hover { background: var(--border); }
 .gp-retry-btn.hidden { display: none; }
@@ -1554,9 +1623,9 @@ body {
   gap: 12px;
   margin: 20px 0;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 .gp-divider::before,
 .gp-divider::after {
@@ -1593,15 +1662,15 @@ body {
 .btn-flights-settings:hover {
   border-color: var(--accent);
   color: var(--accent-light);
-  background: var(--bg-hover);
+  background: var(--accent-subtle);
 }
 .btn-flights-settings.api-active {
-  border-color: #22c55e;
-  color: #22c55e;
-  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(52, 211, 153, 0.4);
+  color: var(--visited);
+  background: var(--visited-subtle);
 }
 .btn-flights-settings.api-active:hover {
-  background: rgba(34, 197, 94, 0.15);
+  background: rgba(52, 211, 153, 0.12);
 }
 .btn-flights-settings svg {
   width: 14px;
@@ -1647,7 +1716,7 @@ body {
   transform: translateY(-1px);
 }
 .btn-fetch-flight:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none;
 }
@@ -1660,25 +1729,25 @@ body {
   font-size: 11px;
   margin-top: 4px;
   padding: 4px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   line-height: 1.4;
   word-break: break-word;
 }
 .fetch-status.hidden { display: none; }
 .fetch-status.fetch-ok {
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: var(--visited-subtle);
+  color: var(--visited);
+  border: 1px solid rgba(52, 211, 153, 0.15);
 }
 .fetch-status.fetch-err {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(248, 113, 113, 0.08);
+  color: var(--danger);
+  border: 1px solid rgba(248, 113, 113, 0.15);
 }
 .fetch-status.fetch-loading {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(96, 165, 250, 0.08);
+  color: var(--blue);
+  border: 1px solid rgba(96, 165, 250, 0.15);
 }
 
 /* ── Flight API Settings Modal ── */
@@ -1725,8 +1794,8 @@ body {
   color: var(--text-muted);
   line-height: 1.6;
   padding: 12px 16px;
-  background: rgba(99, 102, 241, 0.06);
-  border: 1px solid rgba(99, 102, 241, 0.12);
+  background: var(--accent-subtle);
+  border: 1px solid rgba(124, 107, 245, 0.1);
   border-radius: var(--radius-sm);
   margin-bottom: 20px;
 }
@@ -1748,10 +1817,10 @@ body {
 }
 
 .fapi-field label {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   color: var(--text-muted);
 }
 
@@ -1773,7 +1842,7 @@ body {
 .fapi-field input::placeholder { color: var(--text-muted); }
 .fapi-field select:hover:not(:focus),
 .fapi-field input:hover:not(:focus) {
-  border-color: rgba(255,255,255,0.15);
+  border-color: var(--border-light);
 }
 .fapi-field select:focus,
 .fapi-field input:focus {
@@ -1814,12 +1883,12 @@ body {
 .fapi-btn-test {
   background: var(--bg-hover);
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--text-secondary);
 }
 .fapi-btn-test:hover {
   border-color: var(--accent);
   color: var(--accent-light);
-  background: rgba(99, 102, 241, 0.08);
+  background: var(--accent-subtle);
 }
 
 .fapi-btn-save {
@@ -1839,19 +1908,19 @@ body {
 }
 .fapi-status.hidden { display: none; }
 .fapi-ok {
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: var(--visited-subtle);
+  color: var(--visited);
+  border: 1px solid rgba(52, 211, 153, 0.15);
 }
 .fapi-err {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(248, 113, 113, 0.08);
+  color: var(--danger);
+  border: 1px solid rgba(248, 113, 113, 0.15);
 }
 .fapi-loading {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(96, 165, 250, 0.08);
+  color: var(--blue);
+  border: 1px solid rgba(96, 165, 250, 0.15);
 }
 
 .fapi-help {
@@ -1873,7 +1942,7 @@ body {
 }
 .fapi-help summary::-webkit-details-marker { display: none; }
 .fapi-help summary::before {
-  content: "▸ ";
+  content: "\25B8 ";
   font-size: 11px;
   transition: transform var(--transition);
   display: inline-block;
@@ -1914,29 +1983,29 @@ body {
 
 .flights-import-export {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .btn-flights-ie {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 7px 14px;
+  font-size: 12px;
   font-weight: 600;
-  background: var(--bg-card);
+  background: transparent;
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--text-secondary);
   cursor: pointer;
-  border-radius: var(--radius-sm);
+  border-radius: 50px;
   transition: all var(--transition);
 }
 .btn-flights-ie:hover {
-  background: var(--bg-hover);
-  border-color: var(--accent);
+  background: var(--accent-subtle);
+  border-color: rgba(124, 107, 245, 0.3);
   color: var(--accent-light);
 }
-.btn-flights-ie svg { opacity: 0.7; }
+.btn-flights-ie svg { opacity: 0.6; }
 
 /* ===== Flights Toolbar (filter + search + import/export) ===== */
 .flights-toolbar {
@@ -1951,19 +2020,19 @@ body {
 .flights-filter-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
   min-width: 0;
 }
 
 .flights-select {
-  padding: 8px 12px;
-  font-size: 13px;
+  padding: 7px 12px;
+  font-size: 12px;
   font-weight: 600;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  color: var(--text);
-  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  border-radius: 50px;
   cursor: pointer;
   transition: all var(--transition);
   min-width: 120px;
@@ -1975,12 +2044,12 @@ body {
 }
 
 .flights-search-input {
-  padding: 8px 14px;
+  padding: 7px 14px;
   font-size: 13px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: var(--radius-sm);
+  border-radius: 50px;
   transition: all var(--transition);
   flex: 1;
   max-width: 280px;
@@ -2014,7 +2083,7 @@ body {
   opacity: 0;
 }
 .flight-card:hover .flight-card-edit { opacity: 1; }
-.flight-card-edit:hover { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.flight-card-edit:hover { background: rgba(251, 191, 36, 0.12); color: var(--amber); }
 
 /* ===== Edit Flight Modal ===== */
 .edit-flight-modal-content {
@@ -2088,11 +2157,11 @@ body {
 }
 
 .edit-flight-field label {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .edit-flight-field input {
@@ -2114,7 +2183,7 @@ body {
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 .edit-flight-field input:hover:not(:focus) {
-  border-color: rgba(255,255,255,0.15);
+  border-color: var(--border-light);
 }
 
 /* Date & time inputs color-scheme fix for dark theme */
@@ -2131,8 +2200,8 @@ body {
 }
 
 .edit-flight-btn-save {
-  background: #f59e0b;
-  color: #000;
+  background: var(--amber);
+  color: #0a0b10;
   font-weight: 700;
   font-size: 14px;
   padding: 10px 28px;
@@ -2141,7 +2210,7 @@ body {
   cursor: pointer;
   transition: all var(--transition);
 }
-.edit-flight-btn-save:hover { background: #fbbf24; }
+.edit-flight-btn-save:hover { background: #fcd34d; }
 
 .edit-flight-btn-cancel {
   background: var(--bg-hover);
@@ -2154,7 +2223,7 @@ body {
   cursor: pointer;
   transition: all var(--transition);
 }
-.edit-flight-btn-cancel:hover { background: var(--bg-card); color: var(--text); border-color: var(--text-muted); }
+.edit-flight-btn-cancel:hover { background: var(--bg-card); color: var(--text); border-color: var(--border-light); }
 
 /* Dropdown inside edit modal needs higher z-index */
 .edit-flight-field .flight-dropdown {
@@ -2171,8 +2240,8 @@ body {
 
 /* ===== Flight Insights / Advanced Stats ===== */
 .flights-advanced-stats {
-  margin-top: 28px;
-  padding-top: 24px;
+  margin-top: 32px;
+  padding-top: 28px;
   border-top: 1px solid var(--border);
 }
 
@@ -2189,23 +2258,23 @@ body {
 .flights-adv-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
+  gap: 10px;
 }
 
 .adv-stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 16px;
+  border-radius: var(--radius);
+  padding: 18px;
   transition: border-color var(--transition);
 }
-.adv-stat-card:hover { border-color: #3b82f6; }
+.adv-stat-card:hover { border-color: var(--border-light); }
 
 .adv-stat-heading {
   font-size: 13px;
   font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--text);
+  margin-bottom: 14px;
+  color: var(--text-secondary);
 }
 
 .adv-stat-body {
@@ -2224,22 +2293,22 @@ body {
 .adv-bar-label {
   min-width: 40px;
   font-weight: 700;
-  color: var(--accent-light);
+  color: var(--text);
   letter-spacing: 0.5px;
 }
 
 .adv-bar-track {
   flex: 1;
-  height: 8px;
+  height: 6px;
   background: var(--bg-hover);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
   position: relative;
 }
 
 .adv-bar-fill {
   height: 100%;
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.5s ease;
 }
 
@@ -2264,7 +2333,7 @@ body {
 
 .adv-airline-code {
   font-weight: 700;
-  color: #3b82f6;
+  color: var(--blue);
   min-width: 28px;
 }
 
@@ -2278,7 +2347,7 @@ body {
 
 .adv-airline-count {
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-secondary);
   background: var(--bg-hover);
   padding: 2px 8px;
   border-radius: 10px;
@@ -2295,7 +2364,7 @@ body {
 .adv-month-label {
   min-width: 32px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-secondary);
 }
 
 .adv-longest-row {
@@ -2310,7 +2379,7 @@ body {
 .adv-longest-route {
   font-size: 13px;
   font-weight: 700;
-  color: var(--accent-light);
+  color: var(--text);
 }
 
 .adv-longest-dist {
@@ -2322,19 +2391,20 @@ body {
 .fi-modal {
   max-width: 560px;
   width: 90%;
+  padding: 28px;
 }
 
 .fi-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
 }
 
 .fi-desc {
   font-size: 13px;
   color: var(--text-muted);
   margin: 0 0 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 .fi-desc code {
   background: var(--bg-hover);
@@ -2346,31 +2416,31 @@ body {
 
 .fi-tabs {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   margin-bottom: 16px;
-  background: var(--bg-hover);
-  border-radius: var(--radius-sm);
+  background: var(--bg);
+  border-radius: 50px;
   padding: 3px;
 }
 
 .fi-tab {
   flex: 1;
-  padding: 8px 12px;
+  padding: 7px 12px;
   font-size: 13px;
   font-weight: 600;
   background: transparent;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  border-radius: calc(var(--radius-sm) - 2px);
+  border-radius: 50px;
   transition: all var(--transition);
 }
 .fi-tab.active {
   background: var(--bg-card);
   color: var(--text);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
-.fi-tab:hover:not(.active) { color: var(--text); }
+.fi-tab:hover:not(.active) { color: var(--text-secondary); }
 
 .fi-panel.hidden { display: none; }
 
@@ -2387,13 +2457,13 @@ body {
 .fi-format-help summary:hover { text-decoration: underline; }
 
 .fi-example {
-  background: var(--bg-hover);
+  background: var(--bg);
   padding: 12px 14px;
   border-radius: var(--radius-sm);
   font-size: 11px;
   line-height: 1.6;
   overflow-x: auto;
-  color: var(--text);
+  color: var(--text-secondary);
   margin-top: 8px;
   white-space: pre;
   font-family: 'Courier New', monospace;
@@ -2401,7 +2471,7 @@ body {
 
 .fi-upload-area {
   border: 2px dashed var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   padding: 32px 20px;
   text-align: center;
   cursor: pointer;
@@ -2411,7 +2481,7 @@ body {
 .fi-upload-area:hover,
 .fi-upload-area.drag-over {
   border-color: var(--accent);
-  background: rgba(99,102,241,0.06);
+  background: var(--accent-subtle);
   color: var(--accent-light);
 }
 
@@ -2426,7 +2496,7 @@ body {
 .fi-textarea {
   width: 100%;
   padding: 12px 14px;
-  background: var(--bg-card);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
@@ -2484,7 +2554,7 @@ body {
 /* Export modal */
 .fe-buttons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-top: 8px;
 }
 
@@ -2495,10 +2565,10 @@ body {
   align-items: center;
   gap: 8px;
   padding: 24px 16px;
-  background: var(--bg-card);
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -2506,15 +2576,25 @@ body {
 }
 .fe-btn:hover {
   border-color: var(--accent);
-  background: var(--bg-hover);
+  background: var(--accent-subtle);
   color: var(--accent-light);
+}
+
+/* Data sync export hint */
+.ds-panel { }
+.ds-panel.hidden { display: none; }
+.ds-export-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 12px;
 }
 
 /* ===== Responsive ===== */
 
 /* ── Tablet ── */
 @media (max-width: 768px) {
-  /* ── HEADER: compact bar with logo left, passport right ── */
+  /* ── HEADER ── */
   .header {
     flex-direction: row;
     flex-wrap: wrap;
@@ -2526,31 +2606,29 @@ body {
     flex: 1;
     min-width: 0;
   }
-  .logo { font-size: 22px; }
+  .logo { font-size: 20px; }
   .subtitle { display: none; }
   .header-right {
     gap: 10px;
     flex-wrap: nowrap;
   }
-  /* Stats become a compact inline row */
   .stats-bar {
     gap: 14px;
     flex-wrap: nowrap;
   }
-  .stat-number { font-size: 16px; }
+  .stat-number { font-size: 15px; }
   .stat-label { font-size: 9px; }
   .stat-flights { display: none; }
   .btn-passport {
-    padding: 8px 14px;
+    padding: 7px 14px;
     font-size: 12px;
     white-space: nowrap;
   }
   .btn-passport svg { width: 16px; height: 16px; }
 
-  /* ── MAP: full-width, clear zone layout ── */
+  /* ── MAP ── */
   .map-container { height: 56vh; min-height: 340px; }
 
-  /* Search: top center, narrower to not overlap zoom buttons */
   .map-search-overlay {
     top: 10px;
     width: calc(100% - 60px);
@@ -2561,18 +2639,15 @@ body {
   #search-input {
     padding: 10px 14px 10px 38px;
     font-size: 14px;
-    border-radius: 10px;
   }
   .search-icon { left: 12px; }
 
-  /* Zoom controls: top right, out of search's way */
   .map-controls {
     top: 10px;
     right: 8px;
   }
   .map-btn { width: 36px; height: 36px; font-size: 18px; }
 
-  /* Toggles: bottom left, single row, scrollable */
   .map-toggles {
     top: auto;
     bottom: 8px;
@@ -2597,7 +2672,6 @@ body {
     flex-shrink: 0;
   }
 
-  /* Photo buttons: left side, above toggles */
   .photo-buttons {
     bottom: 40px;
     left: 8px;
@@ -2609,14 +2683,14 @@ body {
   .photo-upload-btn { padding: 5px 10px; font-size: 11px; }
   .photo-clear-all { padding: 3px 8px; font-size: 11px; }
 
-  /* Country popup */
   .country-popup {
     width: min(280px, 85vw);
     padding: 16px 18px;
   }
 
   /* ── FLIGHTS SECTION ── */
-  .flights-section { padding: 20px 16px; }
+  .flights-section { padding: 24px 16px; }
+  .flights-add { padding: 16px; }
   .flights-add-row { flex-direction: column; align-items: stretch; }
   .flight-field { min-width: unset; }
   .flight-field-airport { min-width: unset; }
@@ -2625,28 +2699,20 @@ body {
   .flight-arrow { text-align: center; font-size: 20px; padding: 0; }
   .btn-add-flight { width: 100%; justify-content: center; }
 
-  /* Flight stats: horizontal scroll */
   .flights-stats {
-    gap: 8px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 4px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
   }
-  .flights-stats::-webkit-scrollbar { display: none; }
-  .flight-stat-item { min-width: 80px; flex: 0 0 auto; padding: 10px 12px; }
+  .flight-stat-item { padding: 10px 6px; }
   .flight-stat-val { font-size: 17px; }
-  .flight-stat-lbl { font-size: 9px; }
+  .flight-stat-lbl { font-size: 8px; }
   .flights-list { grid-template-columns: 1fr; }
 
-  /* Flights toolbar */
   .flights-toolbar { flex-direction: column; gap: 8px; }
   .flights-filter-group { width: 100%; }
   .flights-search-input { max-width: unset; }
   .flights-import-export { width: 100%; justify-content: flex-end; }
 
-  /* Flight cards - always show action buttons (no hover on touch) */
   .flight-card { padding: 12px; gap: 8px; }
   .flight-iata { font-size: 16px; }
   .flight-city { font-size: 9px; max-width: 70px; }
@@ -2655,13 +2721,13 @@ body {
   .flight-card-edit { opacity: 1; }
 
   /* ── VISITED ── */
-  .visited-section { padding: 20px 16px; }
+  .visited-section { padding: 24px 16px; }
   .visited-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
   .visited-card { padding: 10px 12px; gap: 10px; }
   .visited-card-remove { opacity: 1; }
 
   /* ── MODALS ── */
-  .modal { width: 95%; max-height: 90vh; }
+  .modal { width: 95%; max-height: 90vh; border-radius: var(--radius); }
   .passport-stat-number { font-size: 22px; }
   .passport-cover { padding: 28px 20px 24px; }
   .passport-title { font-size: 18px; letter-spacing: 3px; }
@@ -2678,7 +2744,7 @@ body {
   .edit-flight-row-3 { grid-template-columns: 1fr; }
   .edit-flight-arrow { display: none; }
 
-  .fi-modal { width: 95%; }
+  .fi-modal { width: 95%; padding: 22px; }
   .fi-upload-area { padding: 24px 16px; }
   .fe-buttons { flex-direction: column; }
 
@@ -2694,16 +2760,14 @@ body {
 
 /* ── Phones ── */
 @media (max-width: 480px) {
-  /* ── HEADER: single-line bar — logo + stats + passport ── */
   .header {
     padding: 8px 12px;
     gap: 0;
   }
-  .logo { font-size: 20px; }
+  .logo { font-size: 18px; }
 
-  /* Compact stats — only show 3 core stats */
   .stats-bar { gap: 10px; }
-  .stat-number { font-size: 14px; }
+  .stat-number { font-size: 13px; }
   .stat-label { font-size: 8px; letter-spacing: 0; }
   .btn-passport {
     padding: 7px 12px;
@@ -2711,10 +2775,8 @@ body {
     gap: 4px;
   }
 
-  /* ── MAP: maximize space, no overlaps ── */
   .map-container { height: 52vh; min-height: 280px; }
 
-  /* Search: full width minus zoom button column */
   .map-search-overlay {
     top: 8px;
     width: calc(100% - 56px);
@@ -2730,11 +2792,9 @@ body {
   .search-result-flag { width: 24px; height: 17px; }
   .search-result-name { font-size: 13px; }
 
-  /* Zoom: top right, stacked vertically */
   .map-controls { top: 8px; right: 8px; }
   .map-btn { width: 38px; height: 38px; font-size: 18px; }
 
-  /* Toggles: bottom of map, horizontal scroll strip */
   .map-toggles {
     bottom: 6px;
     left: 6px;
@@ -2744,7 +2804,6 @@ body {
   .map-toggle { padding: 5px 8px; font-size: 10px; gap: 2px; }
   .map-year-select { font-size: 10px; padding: 5px 20px 5px 6px; }
 
-  /* Photo buttons: above toggles, left-aligned, horizontal */
   .photo-buttons {
     bottom: 36px;
     left: 6px;
@@ -2756,9 +2815,10 @@ body {
   .photo-clear-all { padding: 2px 6px; font-size: 10px; }
 
   /* ── FLIGHTS FORM ── */
-  .flights-section { padding: 16px 12px; }
-  .section-title { font-size: 17px; }
-  .flight-field label { font-size: 10px; margin-bottom: 4px; }
+  .flights-section { padding: 20px 12px; }
+  .flights-add { padding: 14px; }
+  .section-title { font-size: 16px; }
+  .flight-field label { font-size: 9px; margin-bottom: 4px; }
   .flight-field input[type="text"],
   .flight-field input[type="time"] { padding: 10px 12px; font-size: 14px; }
   .date-picker-trigger { padding: 10px 12px; font-size: 14px; }
@@ -2767,12 +2827,14 @@ body {
   .flight-number-row { flex-direction: column; gap: 6px; }
   .btn-fetch-flight { width: 100%; justify-content: center; padding: 10px; }
 
-  /* Flight stats */
-  .flight-stat-item { min-width: 72px; padding: 8px 8px; }
-  .flight-stat-val { font-size: 15px; }
+  .flights-stats {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+  .flight-stat-item { padding: 8px 4px; }
+  .flight-stat-val { font-size: 14px; }
   .flight-stat-lbl { font-size: 8px; }
 
-  /* Flight card compact */
   .flight-card { padding: 10px; }
   .flight-iata { font-size: 15px; }
   .flight-card-route { gap: 6px; }
@@ -2781,7 +2843,7 @@ body {
   .flight-card-details { font-size: 10px; }
 
   /* ── VISITED ── */
-  .visited-section { padding: 16px 12px; }
+  .visited-section { padding: 20px 12px; }
   .visited-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   .visited-card { padding: 10px; }
 
@@ -2832,9 +2894,9 @@ body {
 /* ── Very small screens (iPhone SE, Galaxy Fold) ── */
 @media (max-width: 360px) {
   .header { padding: 6px 8px; }
-  .logo { font-size: 18px; }
+  .logo { font-size: 16px; }
   .stats-bar { gap: 6px; }
-  .stat-number { font-size: 13px; }
+  .stat-number { font-size: 12px; }
   .stat-label { font-size: 7px; }
   .btn-passport { padding: 6px 10px; font-size: 10px; }
 
@@ -2844,11 +2906,12 @@ body {
   .map-btn { width: 34px; height: 34px; font-size: 16px; }
 
   .flights-section,
-  .visited-section { padding: 12px 8px; }
+  .visited-section { padding: 16px 8px; }
   .section-title { font-size: 15px; gap: 6px; }
 
-  .flight-stat-item { padding: 6px 4px; min-width: 60px; }
-  .flight-stat-val { font-size: 13px; }
+  .flights-stats { gap: 3px; }
+  .flight-stat-item { padding: 6px 3px; }
+  .flight-stat-val { font-size: 12px; }
 
   .passport-title { font-size: 14px; letter-spacing: 1px; }
   .passport-stat-number { font-size: 18px; }
@@ -2865,17 +2928,17 @@ body {
 .story-viewer.hidden { display: none; }
 .story-backdrop {
   position: absolute; inset: 0;
-  background: rgba(0,0,0,0.88);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
 }
 .story-container {
   position: relative;
   width: min(420px, 92vw);
   height: min(720px, 88vh);
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  background: #111;
-  box-shadow: 0 12px 60px rgba(0,0,0,0.7);
+  background: #0a0b10;
+  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.7);
   display: flex; flex-direction: column;
 }
 
@@ -2885,12 +2948,12 @@ body {
   display: flex; gap: 3px; padding: 10px 12px 0; z-index: 3;
 }
 .story-progress-bar {
-  flex: 1; height: 3px;
-  background: rgba(255,255,255,0.25);
-  border-radius: 2px; overflow: hidden;
+  flex: 1; height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px; overflow: hidden;
 }
 .story-progress-bar .fill {
-  height: 100%; width: 0; border-radius: 2px;
+  height: 100%; width: 0; border-radius: 1px;
   background: #fff; transition: width 0.3s ease;
 }
 .story-progress-bar.done .fill { width: 100%; }
@@ -2905,7 +2968,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%; transition: background 0.15s;
 }
-.story-close:hover { background: rgba(255,255,255,0.15); }
+.story-close:hover { background: rgba(255, 255, 255, 0.12); }
 
 /* Delete button */
 .story-delete {
@@ -2916,7 +2979,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%; transition: background 0.15s;
 }
-.story-delete:hover { background: rgba(239, 68, 68, 0.35); }
+.story-delete:hover { background: rgba(248, 113, 113, 0.3); }
 
 /* Navigation zones */
 .story-nav {
@@ -2958,20 +3021,20 @@ body {
 .story-meta {
   position: absolute; bottom: 0; left: 0; right: 0;
   padding: 32px 16px 14px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
   color: #fff; z-index: 1;
 }
 .story-meta-name {
-  font-size: 15px; font-weight: 600;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  font-size: 14px; font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .story-meta-date {
-  font-size: 12px; color: rgba(255,255,255,0.65);
+  font-size: 12px; color: rgba(255, 255, 255, 0.6);
   margin-top: 2px;
 }
 .story-meta-loc {
-  font-size: 11px; color: rgba(255,255,255,0.5);
+  font-size: 11px; color: rgba(255, 255, 255, 0.45);
   margin-top: 1px;
 }
 
@@ -2979,14 +3042,14 @@ body {
 .story-counter {
   position: absolute; top: 20px; left: 14px;
   z-index: 4; font-size: 12px; font-weight: 600;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* No-thumb placeholder */
 .story-no-thumb {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.5); gap: 8px;
+  color: rgba(255, 255, 255, 0.4); gap: 8px;
   width: 100%; height: 100%;
 }
 .story-no-thumb-icon { font-size: 64px; }
@@ -2996,36 +3059,36 @@ body {
 .story-confirm {
   position: absolute; inset: 0; z-index: 10;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
   animation: story-fade-in 0.15s ease;
 }
 .story-confirm.hidden { display: none; }
 .story-confirm-box {
-  background: #1e2030; border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 14px; padding: 24px 28px;
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: 18px; padding: 24px 28px;
   text-align: center; min-width: 240px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  box-shadow: var(--shadow-lg);
 }
 .story-confirm-box p {
-  color: #e4e4e7; font-size: 15px; font-weight: 600;
+  color: var(--text); font-size: 15px; font-weight: 600;
   margin: 0 0 18px; word-break: break-word;
 }
 .story-confirm-actions { display: flex; gap: 10px; }
 .story-confirm-btn {
   flex: 1; padding: 9px 0; font-size: 13px; font-weight: 600;
-  border-radius: 8px; cursor: pointer; border: none;
+  border-radius: var(--radius-sm); cursor: pointer; border: none;
   transition: background 0.15s, transform 0.1s;
 }
 .story-confirm-btn:active { transform: scale(0.97); }
 .story-confirm-btn.cancel {
-  background: rgba(255,255,255,0.1); color: #e4e4e7;
+  background: rgba(255, 255, 255, 0.06); color: var(--text-secondary);
 }
-.story-confirm-btn.cancel:hover { background: rgba(255,255,255,0.18); }
+.story-confirm-btn.cancel:hover { background: rgba(255, 255, 255, 0.12); }
 .story-confirm-btn.delete {
-  background: #ef4444; color: #fff;
+  background: var(--danger); color: #fff;
 }
-.story-confirm-btn.delete:hover { background: #dc2626; }
+.story-confirm-btn.delete:hover { background: #ef4444; }
 
 /* ===== Photo Duplicate Dialog ===== */
 .photo-dupe-dialog {
@@ -3036,14 +3099,14 @@ body {
 .photo-dupe-dialog.hidden { display: none; }
 .photo-dupe-backdrop {
   position: absolute; inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.65);
 }
 .photo-dupe-box {
   position: relative; z-index: 1;
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 24px;
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: 18px; padding: 24px;
   width: min(400px, 90vw);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
 }
 .photo-dupe-box h3 {
   margin: 0 0 8px; font-size: 17px; color: var(--text);
@@ -3095,14 +3158,14 @@ body {
 .clear-photos-dialog.hidden { display: none; }
 .clear-photos-backdrop {
   position: absolute; inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.65);
 }
 .clear-photos-box {
   position: relative; z-index: 1;
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 28px 28px 22px;
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: 18px; padding: 28px 28px 22px;
   width: min(380px, 90vw); text-align: center;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
 }
 .clear-photos-icon { font-size: 38px; margin-bottom: 8px; }
 .clear-photos-box h3 {
@@ -3119,13 +3182,18 @@ body {
 }
 .clear-photos-btn:active { transform: scale(0.97); }
 .clear-photos-btn.cancel {
-  background: rgba(255,255,255,0.08); color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06); color: var(--text-muted);
 }
-.clear-photos-btn.cancel:hover { background: rgba(255,255,255,0.14); color: var(--text); }
+.clear-photos-btn.cancel:hover { background: rgba(255, 255, 255, 0.1); color: var(--text); }
 .clear-photos-btn.danger {
   background: var(--danger); color: #fff;
 }
-.clear-photos-btn.danger:hover { background: #dc2626; }
+.clear-photos-btn.danger:hover { background: #ef4444; }
 .clear-photos-btn.danger:disabled {
   opacity: 0.4; cursor: not-allowed;
+}
+
+/* ===== Section Dividers ===== */
+.flights-section {
+  border-bottom: 1px solid var(--border);
 }

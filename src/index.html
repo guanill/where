@@ -45,6 +45,10 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="3"/><circle cx="12" cy="11" r="3"/><path d="M7 21v-1a5 5 0 0 1 10 0v1"/></svg>
         My Passport
       </button>
+      <button class="btn btn-data-sync" id="btn-data-sync" title="Export or import all your data">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        Sync Data
+      </button>
     </div>
   </header>
 
@@ -681,6 +685,46 @@ CDG JFK"></textarea>
       <div class="clear-photos-actions" id="clear-photos-actions">
         <button class="btn clear-photos-btn cancel" id="clear-photos-cancel">Cancel</button>
         <button class="btn clear-photos-btn danger" id="clear-photos-confirm">Yes, delete all</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Sync Modal (Export / Import All) -->
+  <div class="modal-overlay" id="data-sync-modal">
+    <div class="modal fi-modal">
+      <button class="modal-close" id="ds-modal-close">&times;</button>
+      <h2 class="fi-title">Sync Data</h2>
+      <p class="fi-desc">Transfer all your data (countries, landmarks, flights, photos) between devices.</p>
+
+      <div class="fi-tabs">
+        <button class="fi-tab active" data-ds-tab="export">Export</button>
+        <button class="fi-tab" data-ds-tab="import">Import</button>
+      </div>
+
+      <!-- Export Tab -->
+      <div class="ds-panel" id="ds-panel-export">
+        <p class="fi-desc">Download a single file containing all your WHERE data. Use this to back up or transfer to another device.</p>
+        <div class="fe-buttons">
+          <button class="btn fe-btn" id="ds-export-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Backup
+          </button>
+        </div>
+        <p class="ds-export-hint" id="ds-export-status"></p>
+      </div>
+
+      <!-- Import Tab -->
+      <div class="ds-panel hidden" id="ds-panel-import">
+        <p class="fi-desc">Upload a previously exported WHERE backup file to restore all your data. <strong>This will replace your current data.</strong></p>
+        <div class="fi-upload-area" id="ds-import-drop">
+          <span class="fi-upload-icon">📦</span>
+          <p>Drop your backup file here or click to browse</p>
+          <input type="file" id="ds-import-input" accept=".json" style="display:none" />
+        </div>
+        <div class="fi-results hidden" id="ds-import-results">
+          <p class="fi-result-text" id="ds-import-result-text"></p>
+          <button class="btn fi-done-btn" id="ds-import-done">Done</button>
+        </div>
       </div>
     </div>
   </div>

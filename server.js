@@ -108,5 +108,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`\n  🌍  WHERE server running at http://localhost:${PORT}\n`);
+  console.log(`\n  🌍  Been server running at http://localhost:${PORT}\n`);
 });
